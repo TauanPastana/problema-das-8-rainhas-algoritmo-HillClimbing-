@@ -21,7 +21,26 @@ def funcao_objetiva(estado:list):
                 conflitos += 1
 
     return conflitos
+
+def funcao_vizinhanca(estado_atual:list) -> list:
+    lista_vizinhaca = []
+    for i in range(len(estado_atual)):
+        for j in range(len(estado_atual)):
+            vizinho = estado_atual.copy()
+            if estado_atual[i] == j:
+                continue
+            vizinho[i] = j
+            lista_vizinhaca.append(vizinho)
+    
+    return lista_vizinhaca
+
+
+
+
+     
+
+
+
     
 
 
-print(funcao_objetiva([5,4,7,3,5,1,7,1]))
