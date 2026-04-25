@@ -34,6 +34,48 @@ def funcao_vizinhanca(estado_atual:list) -> list:
     
     return lista_vizinhaca
 
+def hill_climbing():
+    estado_inicial = random_tabuleiro()
+    menor_h = funcao_objetiva(estado_inicial) 
+    print(f"Estado inicial: {estado_inicial} | com {menor_h} conflitos")
+    estado_atual = estado_inicial.copy()
+    cont = 0
+    while menor_h != 0 and cont <=50000:
+    
+        lista_vizinhaca = funcao_vizinhanca(estado_atual)
+        for vizinho in lista_vizinhaca:
+            cont+=1
+            h_vizinho = funcao_objetiva(vizinho)
+            if h_vizinho == 0:
+                menor_h = h_vizinho
+                estado_atual = vizinho
+                break
+            if menor_h > h_vizinho:
+                estado_atual = vizinho
+                menor_h = h_vizinho
+                continue
+
+
+                
+                
+
+    print(f"Estado atual: {estado_atual} | com {menor_h} conflitos")
+    
+    # for vizinho in lista_vizinhaca:
+    #     if menor_h != 0:
+    #         h_vizinho = funcao_objetiva(vizinho)
+    #         if menor_h > h_vizinho:
+    #             estado_atual = vizinho
+    #             menor_h = h_vizinho
+    #     else:
+    #         break
+    
+    # return estado_atual
+
+hill_climbing()
+            
+
+
 
 
 
