@@ -5,7 +5,7 @@ def random_tabuleiro():
 
     for i in range(8):
       
-        array[i] = randint(0,8)
+        array[i] = randint(0,7)
     return array
 
 def funcao_objetiva(estado:list):
@@ -36,41 +36,33 @@ def funcao_vizinhanca(estado_atual:list) -> list:
 
 def hill_climbing():
     estado_inicial = random_tabuleiro()
-    menor_h = funcao_objetiva(estado_inicial) 
-    print(f"Estado inicial: {estado_inicial} | com {menor_h} conflitos")
+    h_atual = funcao_objetiva(estado_inicial) 
+    print(f"Estado inicial: {estado_inicial} | com {funcao_objetiva(estado_inicial) } conflitos")
     estado_atual = estado_inicial.copy()
     cont = 0
-    while menor_h != 0 and cont <=50000:
+    while h_atual != 0 and cont <=100000:
+        cont+=1
+        melhor_vizinho = estado_atual
+        melhor_h = h_atual
     
         lista_vizinhaca = funcao_vizinhanca(estado_atual)
         for vizinho in lista_vizinhaca:
-            cont+=1
             h_vizinho = funcao_objetiva(vizinho)
-            if h_vizinho == 0:
-                menor_h = h_vizinho
-                estado_atual = vizinho
-                break
-            if menor_h > h_vizinho:
-                estado_atual = vizinho
-                menor_h = h_vizinho
+            if melhor_h > h_vizinho:
+                melhor_vizinho = vizinho
+                melhor_h = h_vizinho
                 continue
+        if melhor_h < h_atual:
+            estado_atual = melhor_vizinho
+            h_atual = melhor_h
 
-
-                
-                
-
-    print(f"Estado atual: {estado_atual} | com {menor_h} conflitos")
+    if h_atual == 0:
+        print("Motivo: Chegou em 0 conflitos!")
+    else:
+        print("Motivo: Passou do limite de iterações!")
     
-    # for vizinho in lista_vizinhaca:
-    #     if menor_h != 0:
-    #         h_vizinho = funcao_objetiva(vizinho)
-    #         if menor_h > h_vizinho:
-    #             estado_atual = vizinho
-    #             menor_h = h_vizinho
-    #     else:
-    #         break
+    print(f"Estado atual: {estado_atual} | com {h_atual} conflitos")
     
-    # return estado_atual
 
 hill_climbing()
             
