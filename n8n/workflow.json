@@ -2,59 +2,13 @@
   "name": "workflow",
   "nodes": [
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        0,
-        0
-      ],
-      "id": "2e7c4c1a-4632-4c88-96db-c2a255be4935",
-      "name": "When clicking ‘Execute workflow’"
-    },
-    {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "0ff63821-86d6-4e17-86b9-ef8a10f1e84c",
-              "name": "execucoes",
-              "value": 15,
-              "type": "number"
-            },
-            {
-              "id": "fdba84af-81cb-41ab-9d50-fab7a1aaf011",
-              "name": "iteracoes",
-              "value": 1000,
-              "type": "number"
-            },
-            {
-              "id": "f4a86ccf-0b3f-4506-a2fc-ec24de5b7e3a",
-              "name": "variante",
-              "value": "subida_mais_ingreme",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        208,
-        0
-      ],
-      "id": "e31146c2-7ea8-4630-b315-854969079145",
-      "name": "Edit Fields"
-    },
-    {
-      "parameters": {
-        "command": "=mkdir -p /home/node/.n8n-files/saida && python /home/node/.n8n-files/estati.py --execucoes 15 --iteracoes 1000 --variante mais_ingreme --saida /home/node/.n8n-files/saida --arquivo resultado.json"
+        "command": "=python3 /home/node/.n8n-files/estati.py --execucoes {{$json.execucoes}} --iteracoes {{$json.iteracoes}} --saida /home/node/.n8n-files/saida --arquivo resultado.json"
       },
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
-        416,
+        640,
         0
       ],
       "id": "b9bdb5e9-2c7f-4a12-9a30-7b2655b660e4",
@@ -68,42 +22,58 @@
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1.1,
       "position": [
-        624,
+        944,
         0
       ],
       "id": "8360eec5-4f62-4b11-ad11-13ef6d01b57e",
       "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "formTitle": "Definição de parametro",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "execucoes",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "iteracoes",
+              "fieldType": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        368,
+        0
+      ],
+      "id": "a64e3607-4f92-4a20-97e6-c82d1d867ec4",
+      "name": "On form submission1",
+      "webhookId": "ff2d4a63-5960-4b6f-9295-07bfed4bc915"
     }
   ],
   "pinData": {},
   "connections": {
-    "When clicking ‘Execute workflow’": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields": {
-      "main": [
-        [
-          {
-            "node": "Execute Command",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Execute Command": {
       "main": [
         [
           {
             "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission1": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
             "type": "main",
             "index": 0
           }
@@ -116,7 +86,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "195c86f3-c88e-4d67-ba2f-0a89d24cbd36",
+  "versionId": "57db3a1e-d4f0-490c-81e3-f0049dd7bde0",
   "meta": {
     "instanceId": "e1cdd3ba60872b032410bcc1755e026ba64cdead8bb8bf93cf654f8c73cbffb1"
   },
