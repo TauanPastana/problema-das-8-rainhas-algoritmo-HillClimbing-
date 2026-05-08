@@ -1,7 +1,7 @@
 services:
   n8n:
     build: .
-    container_name: n8n-ia
+    container_name: n8n
     ports:
       - "5678:5678"
     environment:
@@ -10,10 +10,9 @@ services:
       - N8N_ENABLE_EXECUTE_COMMAND=true
       - N8N_ENABLE_UNSAFE_CORE_NODES=true
       - NODES_EXCLUDE=[]
-      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
     volumes:
       - n8n_data:/home/node/.n8n
-      - ./:/files
+      - ./:/home/node/.n8n-files
     command: start
 
 volumes:

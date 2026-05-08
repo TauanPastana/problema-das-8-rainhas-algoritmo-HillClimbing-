@@ -27,12 +27,12 @@
 
 7. O arquivo de saída será salvo em:
    ```text
-   /files/saida/resultado.json
+   /home/node/.n8n-files/saida/resultado.json
    ```
 
 8. No nó **Read/Write Files from Disk**, use este caminho:
    ```text
-   /files/saida/resultado.json
+   /home/node/.n8n-files/saida/resultado.json
    ```
 
 9. No nó **Extract From File**, extraia o conteúdo JSON para uso no fluxo.
@@ -41,9 +41,3 @@
    ```bash
    docker compose down
    ```
-
-## Observações
-
-- Não use caminhos locais do seu computador, como `/media/usuario/...`.
-- Sempre use o caminho interno do container, que neste projeto é `/files/...`.
-- Se o arquivo não aparecer, verifique se o script criou corretamente a pasta `saida/` e o arquivo `resultado.json`.
