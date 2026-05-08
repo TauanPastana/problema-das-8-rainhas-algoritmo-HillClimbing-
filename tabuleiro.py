@@ -1,14 +1,10 @@
 from random import randint
+from time import perf_counter
 
-def random_tabuleiro():
-    array = [0,0,0,0,0,0,0,0]
+def gerar_estado_inicial():
+    return [randint(0, 7) for _ in range(8)]
 
-    for i in range(8):
-      
-        array[i] = randint(0,7)
-    return array
-
-def funcao_objetiva(estado:list):
+def funcao_objetivo(estado):
     conflitos = 0
     n = len(estado)
 
@@ -22,59 +18,65 @@ def funcao_objetiva(estado:list):
 
     return conflitos
 
-def funcao_vizinhanca(estado_atual:list) -> list:
-    lista_vizinhaca = []
-    for i in range(len(estado_atual)):
-        for j in range(len(estado_atual)):
-            vizinho = estado_atual.copy()
-            if estado_atual[i] == j:
-                continue
-            vizinho[i] = j
-            lista_vizinhaca.append(vizinho)
-    
-    return lista_vizinhaca
+def funcao_vizinhanca(estado_atual):
+    lista_vizinhanca = []
 
-def hill_climbing():
-    estado_inicial = random_tabuleiro()
-    h_atual = funcao_objetiva(estado_inicial) 
-    print(f"Estado inicial: {estado_inicial} | com {funcao_objetiva(estado_inicial) } conflitos")
+    for coluna in range(len(estado_atual)):
+        for linha in range(8):
+            if estado_atual[coluna] == linha:
+                continue
+            vizinho = estado_atual.copy()
+            vizinho[coluna] = linha
+            lista_vizinhanca.append(vizinho)
+
+    return lista_vizinhanca
+
+def hill_climbing(limite_iteracoes=1000):
+    estado_inicial = gerar_estado_inicial()
     estado_atual = estado_inicial.copy()
-    cont = 0
-    while h_atual != 0 and cont <=100000:
-        cont+=1
+    h_atual = funcao_objetivo(estado_atual)
+
+    iteracoes = 0
+    inicio = perf_counter()
+
+    while h_atual > 0 and iteracoes < limite_iteracoes:
+        iteracoes += 1
         melhor_vizinho = estado_atual
         melhor_h = h_atual
-    
-        lista_vizinhaca = funcao_vizinhanca(estado_atual)
-        for vizinho in lista_vizinhaca:
-            h_vizinho = funcao_objetiva(vizinho)
-            if melhor_h > h_vizinho:
+
+        for vizinho in funcao_vizinhanca(estado_atual):
+            h_vizinho = funcao_objetivo(vizinho)
+            if h_vizinho < melhor_h:
                 melhor_vizinho = vizinho
                 melhor_h = h_vizinho
-                continue
+
         if melhor_h < h_atual:
             estado_atual = melhor_vizinho
             h_atual = melhor_h
+        else:
+            break
 
-    if h_atual == 0:
-        print("Motivo: Chegou em 0 conflitos!")
+    tempo_execucao = perf_counter() - inicio
+    sucesso = (h_atual == 0)
+
+    if sucesso:
+        motivo = "Chegou em 0 conflitos"
+    elif iteracoes >= limite_iteracoes:
+        motivo = "Atingiu o limite de iterações"
     else:
-        print("Motivo: Passou do limite de iterações!")
-    
-    print(f"Estado atual: {estado_atual} | com {h_atual} conflitos")
-    
+        motivo = "Não encontrou vizinho melhor, possivel ótimo local ou platô"
 
-hill_climbing()
-            
+    resultado = {
+        "estado_inicial": estado_inicial,
+        "estado_final": estado_atual,
+        "conflitos_finais": h_atual,
+        "iteracoes": iteracoes,
+        "tempo_execucao": tempo_execucao,
+        "sucesso": sucesso,
+        "motivo_parada": motivo
+    }
 
+    return resultado
 
-
-
-
-     
-
-
-
-    
-
-
+resultado = hill_climbing(limite_iteracoes=1000)
+print(resultado)
